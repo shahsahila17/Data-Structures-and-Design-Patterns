@@ -1,0 +1,135 @@
+#include <bits/stdc++.h> 
+class Deque
+{
+public:
+    
+    int* arr;
+    int rear;
+    int front;
+    int size;
+
+    Deque(int n)
+    {
+        size = n;
+        arr = new int[size];
+        front = rear = -1;
+    }
+
+    // Pushes 'X' in the front of the deque. Returns true if it gets pushed into the deque, and false otherwise.
+    bool pushFront(int x)
+    {
+        if((front == 0 && rear == size-1) || (rear + 1) % size == front) {
+            return false;
+        }
+
+        if(front == -1 && rear == -1) {
+            rear = 0;
+            front = 0;
+            arr[front] = x;
+            return true;
+        }
+
+        if(front == 0) {
+            front = size-1;
+        }
+        else
+            front = (front-1) % size;
+        arr[front] = x;
+        return true;
+    }
+
+    // Pushes 'X' in the back of the deque. Returns true if it gets pushed into the deque, and false otherwise.
+    bool pushRear(int x)
+    {
+        if((front == 0 && rear == size-1) || (rear + 1) % size == front) {
+            return false;
+        }
+
+        if(front == -1 && rear == -1) {
+            rear = 0;
+            front = 0;
+            arr[front] = x;
+            return true;
+        }
+
+        rear = (rear+1) % size;
+        arr[rear] = x;
+        return true;
+    }
+
+    // Pops an element from the front of the deque. Returns -1 if the deque is empty, otherwise returns the popped element.
+    int popFront()
+    {
+        if(front == -1) {
+            return -1;
+        }
+
+        int val = arr[front];
+
+        if(rear == front) {
+            front = -1;
+            rear = -1;
+            return val;
+        }
+        else {
+            front = (front+1) % size;
+            return val;
+        }
+
+    }
+
+    // Pops an element from the back of the deque. Returns -1 if the deque is empty, otherwise returns the popped element.
+    int popRear()
+    {
+        if(front == -1) {
+            return -1;
+        }
+
+        int val = arr[rear];
+
+        if(rear == front) {
+            front = -1;
+            rear = -1;
+            return val;
+        }
+        else {
+            if(rear == 0)
+                rear = size-1;
+            else
+                rear = (rear-1) % size;
+            //cout<<"Sahil"<<rear<<endl;
+            return val;
+        }
+    }
+
+    // Returns the first element of the deque. If the deque is empty, it returns -1.
+    int getFront()
+    {
+        if(front != -1)
+            return arr[front];
+        return -1;
+    }
+
+    // Returns the last element of the deque. If the deque is empty, it returns -1.
+    int getRear()
+    {
+        if(rear != -1)
+            return arr[rear];
+        return -1;
+    }
+
+    // Returns true if the deque is empty. Otherwise returns false.
+    bool isEmpty()
+    {
+        return front == -1;
+    }
+
+    // Returns true if the deque is full. Otherwise returns false.
+    bool isFull()
+    {
+        if((front == 0 && rear == size-1) || (rear + 1) % size == front) {
+            return true;
+        }
+        return false;
+    }
+};

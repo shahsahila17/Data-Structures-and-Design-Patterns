@@ -1,0 +1,87 @@
+#include <iostream>
+#include <map>
+using namespace std;
+
+class Command {
+    public:
+        virtual void execute() = 0;
+};
+
+class Device {
+    public:
+        virtual void turnOn() = 0;
+        virtual void turnOff() = 0;
+};
+
+class Lights : public Device {
+    void turnOn() {
+        cout<<"Turning on the lights"<<endl;
+    }
+    void turnOff() {
+        cout<<"Turning off the lights"<<endl;
+    }
+};
+
+class Fridge : public Device {
+    void turnOn() {
+        cout<<"Turning on the Fridge"<<endl;
+    }
+    void turnOff() {
+        cout<<"Turning off the Fridge"<<endl;
+    }
+};
+
+class TurnOnCommand : public Command{
+    private:
+        Device* device;
+    public:
+        TurnOnCommand(Device* device) {
+            this->device = device;
+        }
+        void execute() {
+            device->turnOn();
+        }
+};
+
+class TurnOffCommand : public Command{
+    private:
+        Device* device;
+    public:
+        TurnOffCommand(Device* device) {
+            this->device = device;
+        }
+        void execute() {
+            device->turnOff();
+        }
+};
+
+
+class RemoteControl {
+    private:
+        map<int, Command*> commands;
+    public: 
+        void setCommand(int button, Command* command) {
+            commands[button] = command;
+        }
+        void pressButton(int button) {
+            commands[button]->execute();
+        }
+};
+
+int main()
+{
+    RemoteControl* remoteControl = new RemoteControl();
+    
+    Device* lights = new Lights;
+    Device* fridge = new Fridge;
+    
+    remoteControl->setCommand(0, new TurnOnCommand(lights));
+    remoteControl->setCommand(1, new TurnOffCommand(lights));
+    remoteControl->setCommand(2, new TurnOnCommand(fridge));
+    remoteControl->setCommand(3, new TurnOffCommand(fridge));
+    
+    remoteControl->pressButton(0);
+    remoteControl->pressButton(1);
+    remoteControl->pressButton(2);
+    remoteControl->pressButton(3);
+}

@@ -1,0 +1,58 @@
+Node* getMid(Node* head){
+        Node* slow = head;
+        Node* fast = slow->next;
+        
+        while(fast!=NULL && fast->next!=NULL){
+            slow = slow->next;
+            fast = fast->next;
+            if(fast!=NULL)
+                fast = fast->next;
+        }
+        
+        return slow;
+    }
+    
+    Node* reverse(Node* head){
+        Node* prev = NULL;
+        Node* curr = head;
+        Node* forward = NULL;
+        
+        while(curr!=NULL){
+            forward = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = forward;
+        }
+        
+        return prev;
+    }
+    
+    bool isPalindrome(Node *head)
+    {
+        if(head == NULL)
+            return false;
+        
+        Node* mid = getMid(head);
+        
+        // Node* temp = mid->next;
+        mid->next = reverse(mid->next);
+        
+        Node* head2 = mid->next;
+        
+        Node* p = head;
+        Node* q = head2;
+        
+        while(q!=NULL){
+            if(p->data != q->data)
+                return false;
+            
+            q = q->next;
+            p = p->next;
+        }
+        
+        mid->next = reverse(mid->next);
+        
+        return true;
+        
+        
+    }

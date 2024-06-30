@@ -1,0 +1,149 @@
+#include <iostream>
+using namespace std;
+
+class Node{
+  public:
+      int data;
+      Node* next;
+      Node* prev;
+      
+      Node(int data){
+          this->data = data;
+          this->next = NULL;
+          this->prev = NULL;
+      }
+  
+};
+
+void print(Node* head){
+    Node* p = head;
+    while(p!=NULL){
+        cout<<p->data<<" ";
+        p = p->next;
+    }
+    cout<<endl;
+}
+
+void insertAtHead(Node* &head,Node* &tail,int data){
+    if(head == NULL){
+        Node* temp = new Node(data);
+        head = temp;
+        tail = temp;
+        return;
+    }
+    
+    Node* temp = new Node(data);
+    head->prev = temp;
+    temp->next = head;
+    head = temp;
+}
+
+void insertAtTail(Node* &head,Node* &tail,int data){
+    if(head == NULL){
+        Node* temp = new Node(data);
+        head = temp;
+        tail = temp;
+        return;
+    }
+    
+    Node* temp = new Node(data);
+    temp->prev = tail;
+    tail->next = temp;
+    tail = temp;
+}
+
+void insertAtPos(Node* &head,Node* &tail,int data,int pos){
+    if(pos == 1){
+        insertAtHead(head,tail,data);
+        return;
+    }
+    
+    Node* p = head;
+    for(int i=0;i<(pos-2);i++){
+        p = p->next;
+    }
+    
+    if(p->next == NULL){
+        insertAtTail(head,tail,data);
+        return;
+    }
+    
+    Node* temp = new Node(data);
+    p->next->prev = temp;
+    temp->next = p->next;
+    temp->prev = p;
+    p->next = temp;
+}
+
+void deleteAtPos(Node* &head,Node* &tail,int pos){
+    if(pos == 1){
+        Node* temp = head;
+        head = head->next;
+        temp->next = NULL;
+        temp->prev = NULL;
+        delete temp;
+        return;
+    }
+    
+    Node* prevNode = NULL;
+    Node* currNode = head;
+    
+    for(int i=0;i<(pos-1);i++){
+        prevNode = currNode;
+        currNode = currNode->next;
+    }
+    
+    if(currNode->next == NULL){
+        prevNode->next = currNode->next;
+        tail = prevNode;
+    }
+    else{
+        currNode->next->prev = prevNode;
+        prevNode->next = currNode->next;
+    }
+    
+    currNode->next = NULL;
+    currNode->prev = NULL;
+    delete currNode;
+}
+
+int main()
+{
+    Node* head = NULL;
+    Node* tail = NULL;
+    
+    insertAtHead(head,tail,30);
+    print(head);
+    insertAtHead(head,tail,20);
+    print(head);
+    insertAtHead(head,tail,10);
+    print(head);
+    insertAtTail(head,tail,40);
+    print(head);
+    insertAtTail(head,tail,50);
+    print(head);
+    insertAtTail(head,tail,60);
+    print(head);
+    insertAtPos(head,tail,70,7);
+    print(head);
+    deleteAtPos(head,tail,1);
+    print(head);
+    
+    cout<<"head = "<<head->data<<endl;
+    cout<<"tail = "<<tail->data<<endl;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

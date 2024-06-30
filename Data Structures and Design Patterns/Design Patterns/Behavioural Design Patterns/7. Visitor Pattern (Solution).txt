@@ -1,0 +1,80 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Scorpio;
+class Fortuner;
+
+class Visitor {
+    public:
+        virtual void visit(Scorpio* scorpio) = 0;
+        virtual void visit(Fortuner* fortuner) = 0;
+};
+
+class Car {
+    public:
+        virtual void accept(Visitor* visitor) = 0;
+};
+
+class Scorpio : public Car{
+    public:
+    void accept(Visitor* visitor) {
+        visitor->visit(this);
+    }
+};
+
+class Fortuner : public Car{
+    public:
+    void accept(Visitor* visitor) {
+        visitor->visit(this);
+    }
+};
+
+class InsuranceVisitor : public Visitor {
+  public:
+    void visit(Scorpio* scorpio) {
+        cout<<"Visiting InsuranceVisitor for scorpio"<<endl;
+    }
+    void visit(Fortuner* fortuner) {
+        cout<<"Visiting InsuranceVisitor for fortuner"<<endl;
+    }
+};
+
+class WarrantyVisitor : public Visitor {
+  public:
+    void visit(Scorpio* scorpio) {
+        cout<<"Visiting WarrantyVisitor for scorpio"<<endl;
+    }
+    void visit(Fortuner* fortuner) {
+        cout<<"Visiting WarrantyVisitor for fortuner"<<endl;
+    }
+};
+
+class Fleet {
+  public:
+    vector<Car*> cars;
+    
+    void addCar(Car* car) {
+        cars.push_back(car);
+    }
+    
+    void performOperation(Visitor* visitor) {
+        for(int i=0; i<cars.size(); i++) {
+            cars[i]->accept(visitor);
+        }
+    }
+};
+
+int main()
+{
+    Fleet* fleet = new Fleet();
+    
+    fleet->addCar(new Scorpio());
+    fleet->addCar(new Fortuner());
+    
+    InsuranceVisitor* insuranceVisitor = new InsuranceVisitor();
+    fleet->performOperation(insuranceVisitor);
+    
+    WarrantyVisitor* warrantyVisitor = new WarrantyVisitor();
+    fleet->performOperation(warrantyVisitor);
+}

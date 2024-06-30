@@ -1,0 +1,102 @@
+Problem:
+
+
+#include <iostream>
+#include <string>
+#include <map>
+using namespace std;
+
+class Character {
+    private:
+        //intrinsic
+        string fontName;
+        int fontSize;
+        char c;
+        int pos;
+    public:
+        
+        Character(char c, int pos) {
+            this->c = c;
+            this->fontName = "sahil";
+            this->fontSize = 20;
+            this->pos = pos;
+        }
+        
+        //extrinsic
+        void display() {
+            cout<<"Writing character: "<<c<<" with fontName = "
+                <<fontName<<" and fontSize = "<<fontSize << " at position = "<<pos<<endl;
+        }
+};
+
+class TypeWriter {
+    public:
+        Character* writeChar(char c, int pos) {
+            return new Character(c, pos);
+        }
+};
+
+int main()
+{
+    int pos = 0;
+    TypeWriter typeWriter;
+    typeWriter.writeChar('A', pos++)->display();
+    typeWriter.writeChar('B', pos++)->display();
+}
+
+
+
+
+
+Solution:
+
+
+#include <iostream>
+#include <string>
+#include <map>
+using namespace std;
+
+class Character {
+    private:
+        //intrinsic
+        static string fontName;
+        static int fontSize;
+        char c;
+    public:
+        
+        Character(char c) {
+            this->c = c;
+        }
+        
+        //extrinsic
+        void display(int pos) {
+            cout<<"Writing character: "<<c<<" with fontName = "
+                <<fontName<<" and fontSize = "<<fontSize << " at position = "<<pos<<endl;
+        }
+};
+
+string Character :: fontName = "Monotype Corsiva";
+int Character :: fontSize = 20;
+
+class TypeWriter {
+    private:
+        map<char, Character*> mapping;
+    public:
+        Character* writeChar(char c) {
+            if(mapping.find(c) != mapping.end()) {
+                return mapping[c];
+            }
+            else {
+                mapping[c] = new Character(c);
+                return mapping[c];
+            }
+        }
+};
+
+int main()
+{
+    int pos = 0;
+    TypeWriter typeWriter;
+    typeWriter.writeChar('A')->display(pos++);
+    typeWriter.writeChar('B')->display(pos++);
+}

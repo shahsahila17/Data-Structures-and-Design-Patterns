@@ -1,0 +1,47 @@
+class Solution{
+    
+    public:
+    // Your are required to complete this function
+    // function should return root of the modified BST
+    
+    void inorder(Node* root, vector<int>& list, int& cnt) {
+        
+        if(root == NULL)
+            return;
+            
+        inorder(root->left, list, cnt);
+        list.push_back(root->data);
+        cnt++;
+        inorder(root->right, list, cnt);
+    }
+    
+    Node* balancedTree(vector<int>& list, int start, int end) {
+        
+        if(start > end)
+            return NULL;
+            
+        int mid = (start + end)/2;
+        
+        Node* n = new Node(list[mid]);
+        
+        n->left = balancedTree(list, start, mid-1);
+        n->right = balancedTree(list, mid+1, end);
+        
+        return n;
+    }
+    
+    Node* buildBalancedTree(Node* root)
+    {
+        int start = 0;
+        int n = 0;
+        
+    	vector<int> list;
+    	inorder(root, list, n);
+    	
+    	int end = n-1;
+    	
+    	return balancedTree(list, start, end);
+    }
+};
+
+

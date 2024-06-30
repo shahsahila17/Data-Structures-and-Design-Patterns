@@ -1,0 +1,47 @@
+#include <iostream>
+using namespace std;
+
+class Image {
+    public:
+        virtual void display() = 0;
+};
+
+class RealImage : public Image {
+    private:
+        string filename;
+    public:
+        RealImage(string filename) {
+            cout<<"Loading Image"<<endl;
+            this->filename = filename;
+        }
+        
+        void display() {
+            cout<<"displaying Image << "<<filename<<endl;
+        }
+};
+
+class ProxyImage: public Image {
+    private:
+        string filename;
+        RealImage* realImage;
+        
+    public:
+    
+        ProxyImage(string filename) {
+            this->filename = filename;
+        }
+        
+        void display() {
+            if(realImage == NULL) {
+                realImage = new RealImage(filename);
+            }
+            realImage->display();
+        }
+};
+
+int main()
+{
+    Image* image = new ProxyImage("myImage");
+    image->display();
+    image->display();
+}

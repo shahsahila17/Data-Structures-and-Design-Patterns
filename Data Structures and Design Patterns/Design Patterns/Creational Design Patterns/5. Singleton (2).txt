@@ -1,0 +1,42 @@
+#include <iostream>
+using namespace std;
+
+/*
+
+To avoid the drawback, we can initalize: Singleton* Singleton::instance = new Singleton; 
+But this causes a performance issue, because we are allocating it a space which we are not 
+sure if it will ever need or not.
+
+*/
+
+class Singleton {
+    private:
+        static Singleton* instance;
+        
+        Singleton() {
+            cout<<"Inside constructor of Singleton class"<<endl;
+        }
+        
+        Singleton(const Singleton&)= delete;
+        Singleton& operator=(const Singleton&)= delete;
+    
+    public: 
+        void display() {
+            cout<<"This is Sahil"<<endl;
+        }
+        
+        static Singleton* getInstance() {
+            return instance;
+        }
+};
+
+Singleton* Singleton::instance = new Singleton; 
+
+int main() {
+    Singleton* obj1 = Singleton::getInstance();
+    Singleton* obj2 = Singleton::getInstance();
+}
+
+
+
+

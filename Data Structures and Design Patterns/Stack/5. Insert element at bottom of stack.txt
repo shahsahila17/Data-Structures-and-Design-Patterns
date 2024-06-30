@@ -1,0 +1,16 @@
+class Solution{
+public:
+    stack<int> insertAtBottom(stack<int>& st,int x){
+        if(st.empty()) {
+            st.push(x);
+        }
+        else {
+            int data = st.top();
+            st.pop();
+            insertAtBottom(st, x);
+            st.push(data);
+        }
+        
+        return st;
+    }
+};

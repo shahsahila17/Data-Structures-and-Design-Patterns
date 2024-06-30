@@ -1,0 +1,30 @@
+class Solution
+{
+    public:
+    
+    pair<int, bool> sumTree(Node* root) {
+        
+        if(root == NULL)
+            return make_pair(0, true);
+        
+        if(root->left == NULL && root->right == NULL)
+            return make_pair(root->data, true);
+        
+        pair<int, bool> left = sumTree(root->left);
+        pair<int, bool> right = sumTree(root->right);
+        
+        bool isSum = (left.second && right.second
+                && (root->data == left.first + right.first));
+                
+        int sum = root->data + left.first + right.first;
+        
+        return make_pair(sum, isSum);
+    }
+    
+    bool isSumTree(Node* root)
+    {
+        pair<int, bool> ans = sumTree(root);
+        return ans.second;
+    }
+    
+};

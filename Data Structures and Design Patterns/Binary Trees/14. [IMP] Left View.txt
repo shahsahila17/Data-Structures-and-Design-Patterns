@@ -1,0 +1,24 @@
+void solve(Node* root, vector<int>& ans, int lvl, map<int, int>& mapping) {
+    if(root == NULL)
+        return;
+        
+    if(mapping.find(lvl) == mapping.end()) {
+        mapping[lvl] = 1;
+        ans.push_back(root->data);
+    }
+    
+    solve(root->left, ans, lvl+1, mapping);
+    solve(root->right, ans, lvl+1, mapping);
+}
+
+vector<int> leftView(Node *root)
+{
+   vector<int> ans;
+   map<int, int> mapping;
+   
+   int lvl = 0;
+   
+   solve(root, ans, lvl, mapping);
+   
+   return ans;
+}

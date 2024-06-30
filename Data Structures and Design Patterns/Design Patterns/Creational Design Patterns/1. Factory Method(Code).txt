@@ -1,0 +1,50 @@
+#include <iostream>
+using namespace std;
+
+enum B_TYPE {
+    PARLEG, GOODDAY
+};
+
+class Biscuit {
+    public:
+        virtual void bake() = 0;
+        virtual void mould() = 0;
+};
+
+class ParleG : public Biscuit {
+    public:
+        void bake() {
+            cout<<"Baking ParleG"<<endl;
+        }
+        void mould() {
+            cout<<"Mould ParleG"<<endl;
+        }
+};
+
+class GoodDay : public Biscuit {
+    public:
+        void bake() {
+            cout<<"Baking GoodDay"<<endl;
+        }
+        void mould() {
+            cout<<"Mould GoodDay"<<endl;
+        }
+};
+
+class BiscuitFactory {
+    public:
+        static Biscuit* createBiscuit(B_TYPE biscuit) {
+            switch(biscuit) {
+                case PARLEG: return new ParleG;
+                case GOODDAY: return new GoodDay;
+                default: throw;
+            }
+        }
+};
+
+int main()
+{
+    Biscuit* biscuit = BiscuitFactory::createBiscuit(GOODDAY);
+    biscuit->bake();
+    return 0;
+}

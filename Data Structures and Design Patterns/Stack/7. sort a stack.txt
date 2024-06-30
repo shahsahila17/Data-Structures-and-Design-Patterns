@@ -1,0 +1,27 @@
+void insertInSorted(stack<int>& s, int data) {
+    if(s.empty())
+        s.push(data);
+    else {
+        if(s.top() > data) {
+            int val = s.top();
+            s.pop();
+            insertInSorted(s, data);
+            s.push(val);
+        }
+        else {
+            s.push(data);
+        }
+    }
+}
+
+void SortedStack :: sort()
+{
+   if(s.empty()) {
+       return;
+   }
+   
+   int data = s.top();
+   s.pop();
+   sort();
+   insertInSorted(s, data);
+}

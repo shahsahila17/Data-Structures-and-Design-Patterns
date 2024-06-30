@@ -1,0 +1,38 @@
+class Solution{
+    public:
+
+    int find(int in[], int data, int start, int end) {
+        for(int i=start; i<=end; i++) {
+            if(in[i] == data)
+                return i;
+        }
+        return 0;
+    }
+    
+    Node* createTree(int in[], int pre[], int n, unordered_map<int, int>& mapping, int start, int end, int& i) {
+        
+        if(start > end || i >= n)
+            return NULL;
+        
+        Node* root = new Node(pre[i]);
+        
+        int index = find(in, pre[i], start, end);
+        
+        i++;
+        
+        root->left = createTree(in, pre, n, mapping, start, index-1, i);
+        root->right = createTree(in, pre, n, mapping, index+1, end, i);
+        
+        return root;
+    }
+    
+    Node* buildTree(int in[],int pre[], int n)
+    {
+        unordered_map<int, int> mapping;
+        int start = 0;
+        int end = n-1;
+        int i = 0;
+        
+        return createTree(in, pre, n, mapping, start , end, i);
+    }
+};

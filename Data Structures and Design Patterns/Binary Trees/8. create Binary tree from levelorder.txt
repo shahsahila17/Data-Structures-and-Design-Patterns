@@ -1,0 +1,114 @@
+#include <iostream>
+#include <queue>
+using namespace std;
+
+class Node {
+    public:
+        Node* left;
+        Node* right;
+        int data;
+        
+        Node(int data) {
+            this->data = data;
+            left = right = NULL;
+        }
+};
+
+Node* createBTree(int* arr, int n) {
+    
+    Node* root = new Node(arr[0]);
+    queue<Node*> q;
+    
+    q.push(root);
+    int i = 1;
+    
+    while(!q.empty() && i<n) {
+        
+        Node* temp = q.front();
+        q.pop();
+        
+        if(arr[i] == -1) {
+            temp->left = NULL;
+            i++;
+        }
+        else {
+            temp->left = new Node(arr[i]);
+            i++;
+            q.push(temp->left);
+        }
+        
+        if(i >= n)
+            break;
+        
+        if(arr[i] == -1) {
+            temp->right = NULL;
+            i++;
+        }
+        else {
+            temp->right = new Node(arr[i]);
+            i++;
+            q.push(temp->right);
+        }
+    }
+    
+    return root;
+}
+
+void inorder(Node* root) {
+    
+    if(root == NULL)
+        return;
+        
+    inorder(root->left);
+    cout<<root->data<<" ";
+    inorder(root->right);
+    
+}
+
+void levelOrder(Node* root) {
+    
+    queue<Node*> q;
+    q.push(root);
+    
+    while(!q.empty()) {
+        
+        int n = q.size();
+        
+        for(int i=0; i<n; i++) {
+            
+            Node* temp = q.front();
+            q.pop();
+            
+            cout<<temp->data<<" ";
+            
+            if(temp->left)
+                q.push(temp->left);
+            if(temp->right)
+                q.push(temp->right);
+        }
+        
+        cout<<"\n";
+    }
+}
+
+int main()
+{
+    int arr[] = {10,20,-1,30,40,60};
+    int n = sizeof(arr)/sizeof(int);
+
+    Node* root = createBTree(arr, n);
+    
+    levelOrder(root);
+}
+
+
+
+
+
+
+
+
+
+
+
+

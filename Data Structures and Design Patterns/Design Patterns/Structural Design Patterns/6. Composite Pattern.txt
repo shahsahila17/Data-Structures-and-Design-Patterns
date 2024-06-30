@@ -1,0 +1,75 @@
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+
+class FileSystem {
+    public:
+        virtual void display() = 0;
+};
+
+//part
+class File: public FileSystem {
+    private:
+        string name;
+    public: 
+        File(string name) {
+            this->name = name;
+        }
+        void display() {
+            cout<<"File: "<<name<<endl;
+        }
+};
+
+//whole
+class Directory: public FileSystem {
+    private:
+    
+        vector<FileSystem*> fileSystem; 
+        string name;
+        
+    public: 
+    
+        Directory(string name) {
+            this->name = name;
+        }
+        
+        void display() {
+            cout<<"Directory: "<<name<<endl;
+            for(auto files : fileSystem) {
+                files->display();
+            }
+        }
+        
+        void add(FileSystem* file) {
+            fileSystem.push_back(file);
+        }
+        
+        void remove(FileSystem* file) {
+            vector<FileSystem*>::iterator it = fileSystem.begin();
+            for(; it!=fileSystem.end();it++) {
+                if(*it == file) {
+                    fileSystem.erase(it);
+                }
+            }
+        }
+};
+
+
+int main()
+{
+    FileSystem* file1 = new File("document.jpg");
+    FileSystem* file2 = new File("temp.txt");
+    
+    Directory* directory = new Directory("Sahil");
+    Directory* directory2 = new Directory("Rahul");
+    
+    directory2->add(file1);
+    directory->add(file1);
+    directory->add(file2);
+    directory->add(directory2);
+    
+    directory->remove(file2);
+    
+    directory->display();
+}

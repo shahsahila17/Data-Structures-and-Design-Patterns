@@ -1,0 +1,47 @@
+class Solution
+{
+    public:
+    //Heapify function to maintain heap property.
+    void heapify(int arr[], int n, int i)  
+    {
+        while(i < n) {
+            
+            int left = 2*i +1;
+            int right = 2*i + 2;
+            int index = i;
+            
+            if(left < n && arr[left] > arr[index])
+                index = left;
+            if(right < n && arr[right] > arr[index])
+                index = right;
+                
+            if(index == i)
+                return;
+                
+            swap(arr[i], arr[index]);
+            i = index;
+        }
+    }
+
+    public:
+    //Function to build a Heap from array.
+    void buildHeap(int arr[], int n)  
+    { 
+        for(int i=(n/2-1); i>=0; i--) {
+            heapify(arr, n, i);
+        }
+    }
+
+    
+    public:
+    //Function to sort an array using Heap Sort.
+    void heapSort(int arr[], int n)
+    {
+        buildHeap(arr, n);
+        
+        for(int i=n-1; i>=0; i--) {
+            swap(arr[i], arr[0]);
+            heapify(arr, i, 0);
+        }
+    }
+};

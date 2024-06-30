@@ -1,0 +1,88 @@
+#include <iostream>
+using namespace std;
+
+class Biscuit {
+  
+  public:
+    virtual void bake() = 0;
+    virtual void mould() = 0;
+    
+};
+
+
+class ParleGCreamBiscuit : public Biscuit {
+    public:
+        void bake() {
+            cout<<"Baking Parle G Cream Biscuit"<<endl;
+        }
+        void mould() {
+            cout<<"Moulding Parle G Cream Biscuit"<<endl;
+        }
+};
+
+class ParleGNormalBiscuit : public Biscuit {
+    public:
+        void bake() {
+            cout<<"Baking Parle G Normal Biscuit"<<endl;
+        }
+        void mould() {
+            cout<<"Moulding Parle G Normal Biscuit"<<endl;
+        }
+};
+
+class GoodDayCreamBiscuit : public Biscuit {
+    public:
+        void bake() {
+            cout<<"Baking GoodDay Cream Biscuit"<<endl;
+        }
+        void mould() {
+            cout<<"Moulding GoodDay Cream Biscuit"<<endl;
+        }
+};
+
+class GoodDayNormalBiscuit : public Biscuit {
+    public:
+        void bake() {
+            cout<<"Baking GoodDay Normal Biscuit"<<endl;
+        }
+        void mould() {
+            cout<<"Moulding GoodDay Normal Biscuit"<<endl;
+        }
+};
+
+class BiscuitFactory {
+  public:
+    virtual Biscuit* createCreamBiscuit() = 0;
+    virtual Biscuit* createNormalBiscuit() = 0;
+};
+
+class ParleGBiscuitFactory : public BiscuitFactory {
+  public:
+    Biscuit* createCreamBiscuit() {
+        return new ParleGCreamBiscuit;
+    }
+    Biscuit* createNormalBiscuit() {
+        return new ParleGNormalBiscuit;
+    }
+};
+
+class GoodDayBiscuitFactory : public BiscuitFactory {
+  public:
+    Biscuit* createCreamBiscuit() {
+        return new GoodDayCreamBiscuit;
+    }
+    Biscuit* createNormalBiscuit() {
+        return new GoodDayNormalBiscuit;
+    }
+};
+
+int main() {
+    BiscuitFactory *biscuitFactory = new ParleGBiscuitFactory;
+    Biscuit *biscuit = biscuitFactory->createCreamBiscuit();
+    biscuit->bake();
+}
+
+
+
+
+

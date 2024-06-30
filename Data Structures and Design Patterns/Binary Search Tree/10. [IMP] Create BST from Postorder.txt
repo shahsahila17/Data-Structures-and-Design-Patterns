@@ -1,0 +1,25 @@
+Node* construct(int post[], int& i, int mini, int maxi) {
+    
+    if(i < 0)
+        return NULL;
+        
+    if(post[i] <= mini || post[i] >= maxi)
+        return NULL;
+    
+    Node* root = new Node(post[i--]);
+
+    root->right = construct(post, i, root->data, maxi);
+    root->left = construct(post, i, mini, root->data);
+    
+    return root;
+    
+}
+
+Node *constructTree (int post[], int size)
+{
+    int i = size-1;
+    int mini = INT_MIN;
+    int maxi = INT_MAX;
+    
+    return construct(post, i, mini, maxi);
+}

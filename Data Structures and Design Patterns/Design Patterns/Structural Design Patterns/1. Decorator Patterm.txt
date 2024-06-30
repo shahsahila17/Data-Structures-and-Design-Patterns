@@ -1,0 +1,55 @@
+#include <iostream>
+using namespace std;
+
+class Car {
+    public:
+        virtual int getWeight() = 0;
+        virtual void drive() = 0;
+};
+
+class Scorpio: public Car {
+    private:
+        int weight;
+    public:
+        Scorpio() {
+            this->weight = 100;
+        }
+        int getWeight() {
+            return weight;
+        }
+        void drive() {
+            cout<<"Driving Scorpio"<<endl;
+        }
+};
+
+class CarDecorator : public Car {
+    protected:
+        Car* c;
+    public:
+        CarDecorator(Car* c) {
+            this->c = c;
+        }
+        int getWeight() {
+            return c->getWeight();
+        }
+        void drive() {
+            cout<<"Driving Scorpio"<<endl;
+        }
+};
+
+class BulletProof: public CarDecorator {
+    public:
+        BulletProof(Car* c) : CarDecorator(c) {
+            
+        }
+        
+        int getWeight() {
+            return c->getWeight() + 300;
+        }
+};
+
+int main() {
+    Car* c = new Scorpio;
+    CarDecorator* decorator = new BulletProof(c);
+    cout<<decorator->getWeight()<<endl;
+}

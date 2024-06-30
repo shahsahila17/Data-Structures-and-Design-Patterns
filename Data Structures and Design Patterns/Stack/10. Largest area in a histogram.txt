@@ -1,0 +1,123 @@
+//{ Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+
+// } Driver Code Ends
+class Solution
+{
+    public:
+    //Function to find largest rectangular area possible in a given histogram.
+    
+    long long* getPrevSmaller(long long arr[], int n) {
+        
+        stack<long long> s;
+        long long* a = new long long[n];
+        
+        s.push(-1);
+        
+        for(int i=0; i<n; i++) {
+            if(s.top() == -1) {
+                a[i] = -1;
+                s.push(i);
+                // cout<<i<<endl;
+            }
+            else {
+                if(arr[s.top()] < arr[i]) {
+                    a[i] = s.top();
+                    s.push(i);
+                }
+                else {
+                    while(s.top() != -1 && arr[s.top()] >= arr[i]) {
+                        // cout<<"a[s.top()] = "<<a[s.top()]<<endl;
+                        s.pop();
+                    }
+                    a[i] = s.top();
+                    s.push(i);
+                }
+             }
+        }
+        
+        return a;
+        
+    }
+    
+    long long* getNextSmaller(long long arr[], int n) {
+        
+        stack<long long> s;
+        long long* a = new long long[n];
+        
+        s.push(-1);
+        
+        for(int i=n-1; i>=0; i--) {
+            if(s.top() == -1) {
+                a[i] = -1;
+                s.push(i);
+            }
+            else {
+                if(arr[s.top()] < arr[i]) {
+                    a[i] = s.top();
+                    s.push(i);
+                }
+                else {
+                    while(s.top() != -1 && arr[s.top()] >= arr[i]) {
+                        s.pop();
+                    }
+                    a[i] = s.top();
+                    s.push(i);
+                }
+             }
+        }
+        
+        return a;
+        
+    }
+    
+    long long getMaxArea(long long arr[], int n)
+    {
+        long long ans = -1;
+        long long height, width;
+        long long* prev = getPrevSmaller(arr, n);
+        long long* next = getNextSmaller(arr, n);
+        
+        for(int i=0; i<n; i++) {
+            
+            width = next[i] - prev[i] - 1;
+            height = arr[i];
+            
+            if(next[i] == -1) {
+                width = n - prev[i] - 1;
+            }
+            
+            ans = max((height*width), ans);
+        }
+        
+        return ans;
+        
+    }
+};
+
+
+//{ Driver Code Starts.
+
+int main()
+ {
+    long long t;
+
+    cin>>t;
+    while(t--)
+    {
+        int n;
+        cin>>n;
+        
+        long long arr[n];
+        for(int i=0;i<n;i++)
+            cin>>arr[i];
+        Solution ob;
+        cout<<ob.getMaxArea(arr, n)<<endl;
+    
+    }
+	return 0;
+}
+
+// } Driver Code Ends

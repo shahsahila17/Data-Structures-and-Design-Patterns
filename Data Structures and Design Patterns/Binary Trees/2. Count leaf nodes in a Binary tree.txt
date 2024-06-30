@@ -1,0 +1,19 @@
+void solve(Node* root, int& cnt) {
+    
+    if(root == NULL)
+        return;
+    
+    if(root->left == NULL && root->right == NULL) {
+        cnt++;
+        return;
+    }
+    
+    solve(root->left, cnt);
+    solve(root->right, cnt);
+} 
+int countLeaves(Node* root)
+{
+    int cnt = 0;
+    solve(root, cnt);
+    return cnt;
+}

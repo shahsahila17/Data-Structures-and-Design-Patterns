@@ -1,0 +1,27 @@
+void splitList(Node *head, Node **head1_ref, Node **head2_ref)
+{
+    Node* slow = head;
+    Node* fast = head;
+    Node* prev = NULL;
+    
+    do{
+        prev = slow;
+        slow = slow->next;
+        fast = fast->next;
+        if(fast!=head)
+            fast = fast->next;
+    }while(fast!=head);
+    
+    // cout<<slow->data<<" "<<fast->data<<" "<<prev->data;
+    
+    prev->next = head;
+    *head1_ref = head;
+    
+    Node* temp = slow;
+    while(slow->next!=head)
+        slow = slow->next;
+
+    slow->next = temp;
+    *head2_ref = temp;
+    
+}

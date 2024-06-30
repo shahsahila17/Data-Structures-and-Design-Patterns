@@ -1,0 +1,110 @@
+Problem:
+
+
+#include <iostream>
+using namespace std;
+
+class Shape {
+  public:
+    virtual void draw() = 0;
+};
+
+class DrawingApi1{
+    public:
+    void draw() {
+        cout<<"using API 1"<<endl;
+    }  
+};
+
+class DrawingApi2{
+    public:
+    void draw() {
+        cout<<"using API 2"<<endl;
+    }  
+};
+
+class Circle1 : public Shape, public DrawingApi1 {
+    private:
+        DrawingApi1* drawingApi;
+    public:
+        Circle1(DrawingApi1* drawingApi) {
+            this->drawingApi = drawingApi;
+        }
+        void draw() {
+            cout << "Drawing Circle ";
+            drawingApi->draw();
+        }
+};
+
+class Circle2 : public Shape, public DrawingApi2 {
+    private:
+        DrawingApi2* drawingApi;
+    public:
+        Circle2(DrawingApi2* drawingApi) {
+            this->drawingApi = drawingApi;
+        }
+        void draw() {
+            cout << "Drawing Circle ";
+            drawingApi->draw();
+        }
+};
+
+int main()
+{
+    Shape* s = new Circle2(new DrawingApi2);
+    s->draw();
+}
+
+
+
+---------------------------------------------------------------------------------------------------------------
+
+
+
+Solution:
+
+
+
+#include <iostream>
+using namespace std;
+
+class Shape {
+  public:
+    virtual void draw() = 0;
+};
+
+class DrawingApi {
+    public:
+        virtual void draw() = 0;  
+};
+
+class DrawingApi1 : public DrawingApi {
+    void draw() {
+        cout<<"using API 1"<<endl;
+    }  
+};
+
+class DrawingApi2 : public DrawingApi {
+    void draw() {
+        cout<<"using API 2"<<endl;
+    }  
+};
+
+class Circle : public Shape {
+    private:
+        DrawingApi* drawingApi;
+    public:
+        Circle(DrawingApi* drawingApi) {
+            this->drawingApi = drawingApi;
+        }
+        void draw() {
+            cout << "Drawing Circle ";
+            drawingApi->draw();
+        }
+};
+
+int main()
+{
+    Shape* s = new Circle(new DrawingApi1);
+    s->draw();
+}

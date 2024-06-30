@@ -1,0 +1,39 @@
+class Solution
+{
+public:
+
+    void solve(Node* root, int& dist, int currDist, int& sum, int currSum) {
+        
+        if(root == NULL)
+            return;
+            
+        currSum += root->data;
+            
+        if(currDist >= dist) {
+            if(currDist > dist) {
+                dist = currDist;
+                sum = currSum;
+            }
+            else if(currSum > sum) {
+                sum = currSum;
+            }
+        }
+        
+        solve(root->left, dist, currDist+1, sum, currSum);
+        solve(root->right, dist, currDist+1, sum, currSum);
+    }
+    
+    int sumOfLongRootToLeafPath(Node *root)
+    {
+        int dist = 0;
+        int sum = 0;
+        
+        int currDist = 1;
+        int currSum = 0;
+        
+        solve(root, dist, currDist, sum, currSum);
+        
+        return sum;
+        
+    }
+};

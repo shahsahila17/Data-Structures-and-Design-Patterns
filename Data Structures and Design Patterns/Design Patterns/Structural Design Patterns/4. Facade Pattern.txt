@@ -1,0 +1,46 @@
+#include <iostream>
+using namespace std;
+
+class Lights {
+    public:
+        void turnOn() {
+            cout<<"Turn on Lights"<<endl;
+        }
+        void turnOff() {
+            cout<<"Turn off Lights"<<endl;
+        }
+};
+
+class Engine {
+    public:
+        void turnOn() {
+            cout<<"Turn on Engine"<<endl;
+        }
+        void turnOff() {
+            cout<<"Turn off Engine"<<endl;
+        }
+};
+
+class Car {
+    private:
+        Engine engine;
+        Lights lights;
+    public:
+        void startCar() {
+            engine.turnOn();
+            lights.turnOn();
+            cout<<"Car has started"<<endl;
+        }
+        void stopCar() {
+            engine.turnOff();
+            lights.turnOff();
+            cout<<"Car has stopped"<<endl;
+        }
+};
+
+int main()
+{
+    Car* c = new Car();
+    c->startCar();
+    c->stopCar();
+}

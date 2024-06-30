@@ -1,0 +1,26 @@
+class Queue {
+    stack<int> input, output;
+public:
+
+    void enqueue(int x) {
+        input.push(x);
+    }
+
+    int dequeue() {
+        
+        int data;
+        
+        if(input.size() == 1) {
+            
+            data = input.top();
+            input.pop();
+            return data;
+        }
+        
+        data = input.top();
+        input.pop();
+        int val = dequeue();
+        input.push(data);
+        return val;
+    }
+};

@@ -1,0 +1,66 @@
+Approach 1:
+
+
+class Solution {
+  public:
+    // Function to check whether a Binary Tree is BST or not.
+    
+    void inorder(Node* root, vector<int>& list) {
+        if(root == NULL)
+            return;
+            
+        inorder(root->left, list);
+        list.push_back(root->data);
+        inorder(root->right, list);
+    }
+    
+    bool isBST(Node* root) {
+        
+        vector<int> list;
+        inorder(root, list);
+        int n = list.size();
+        
+        for(int i=0; i<n-1; i++) {
+            if(list[i] >= list[i+1])
+                return false;
+        }
+        
+        if(list[n-2] >= list[n-1])
+            return false;
+        return true;
+        
+    }
+};
+
+
+
+Approach 2:
+
+
+class Solution {
+  public:
+    // Function to check whether a Binary Tree is BST or not.
+    
+    bool solve(Node* root, int x, int y) {
+        
+        if(root == NULL)
+            return true;
+        
+        bool left = solve(root->left, x, root->data);
+        bool right = solve(root->right, root->data, y);
+        
+        if(left && right && root->data > x && root->data < y) {
+            return true;
+        }
+        return false;
+    }
+    
+    bool isBST(Node* root) {
+        
+        int x = INT_MIN;
+        int y = INT_MAX;
+        
+        return solve(root, x, y);
+        
+    }
+};

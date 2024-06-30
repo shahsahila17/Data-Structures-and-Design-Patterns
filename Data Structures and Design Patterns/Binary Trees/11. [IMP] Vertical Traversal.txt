@@ -1,0 +1,39 @@
+class Solution
+{
+    public:
+    //Function to find the vertical order traversal of Binary Tree.
+    
+    void solve(Node* root, map<int, map<int, vector<int> > >& mapping, int hd, int lvl) {
+        
+        if(root == NULL)
+            return;
+        
+        solve(root->left, mapping, hd-1, lvl+1);
+        solve(root->right, mapping, hd+1, lvl+1);
+        
+        mapping[hd][lvl].push_back(root->data);
+        
+    }
+    
+    vector<int> verticalOrder(Node *root)
+    {
+        map<int, map<int, vector<int> > > mapping;
+        vector<int> ans;
+        
+        int hd = 0;
+        int lvl = 0;
+        
+        solve(root, mapping, hd, lvl);
+        
+        for(auto i:mapping) {
+            for(auto j:i.second) {
+                for(int k:j.second) {
+                    ans.push_back(k);
+                }
+            }
+        }
+        
+        return ans;
+        
+    }
+};

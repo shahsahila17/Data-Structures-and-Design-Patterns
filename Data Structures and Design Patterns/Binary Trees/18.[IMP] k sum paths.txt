@@ -1,0 +1,45 @@
+1 -1 4 1  k = 5;
+
+		map[0] = 1
+1		map[1] = 1	1-k = -4
+1 0		map[0] = 2	0-k = -5
+1 0 4		map[4] = 1	4-k = -1
+1 0 4 5		map[5] = 1	5-5 = 0, map[0] = 2
+
+
+
+class Solution{
+  public:
+  
+    void solve(Node* root, int k, int& ans, int& sum, unordered_map<int, int>& mapping) {
+        
+        if(root == NULL)
+            return;
+            
+        sum = sum + root->data;
+        if(mapping[sum - k] != 0) {
+            ans+=mapping[sum - k];
+            // cout<<(sum - k)<<" "<<root->data<<endl;
+        }
+        mapping[sum]++;
+            
+        solve(root->left, k, ans, sum, mapping);
+        solve(root->right, k, ans, sum, mapping);
+        
+        mapping[sum] --;
+        sum = sum - root->data;
+        
+    }
+    
+    int sumK(Node *root,int k)
+    {
+        int ans = 0;
+        int sum = 0;
+        unordered_map<int, int> mapping;
+        mapping[0] = 1;
+        
+        solve(root, k, ans, sum, mapping);
+        
+        return ans;
+    }
+};

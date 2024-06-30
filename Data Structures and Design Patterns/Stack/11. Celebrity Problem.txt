@@ -1,0 +1,113 @@
+O(N^2) solution:
+
+class Solution 
+{
+    public:
+    //Function to find if there is a celebrity in the party or not.\
+    
+    bool checkCol(int col, vector<vector<int> >& M, int n) {
+        
+        int cnt = 0;
+        
+        for(int i=0; i<n; i++) {
+            if(M[i][col] == 1) {
+                cnt++;
+            }
+        }
+        
+        return cnt == n-1;
+    }
+    
+    int celebrity(vector<vector<int> >& M, int n) 
+    {
+        bool flag = 0;
+        
+        for(int i=0; i<n; i++) {
+            
+            flag = true;
+            
+            for(int j=0; j<n; j++) {
+                if(M[i][j] != 0) {
+                    flag = false;
+                    break;
+                }
+            }
+            
+            if(flag) {
+                
+                bool colCheck = checkCol(i, M, n);
+                
+                if(colCheck) {
+                    return i;
+                }
+            }
+        }
+        
+        return -1;
+    }
+};
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------
+
+
+
+O(N) solution:
+
+class Solution 
+{
+    public:
+    //Function to find if there is a celebrity in the party or not.
+    
+    bool check(int candidate, vector<vector<int>>& M, int n) {
+        
+        int cnt = 0;
+        
+        for(int i=0; i<n; i++) {
+            if(M[i][candidate] == 1) 
+                cnt++;
+        }
+        
+        for(int i=0; i<n; i++) {
+            if(M[candidate][i] != 0)
+                return false;
+        }
+        
+        return cnt == n-1;
+    }
+    
+    bool knows(int i, int j, vector<vector<int> >& M) {
+        return M[i][j];
+    }
+    
+    int celebrity(vector<vector<int> >& M, int n) 
+    {
+        stack<int> s;
+        
+        for(int i=0; i<n; i++) {
+            s.push(i);
+        }
+        
+        while(s.size() != 1) {
+            
+            int candidate1 = s.top();
+            s.pop();
+            
+            int candidate2 = s.top();
+            s.pop();
+            
+            if(knows(candidate1, candidate2, M)) {
+                s.push(candidate2);
+            }
+            else {
+                s.push(candidate1);
+            }
+        }
+        
+        int candidate = s.top();
+        
+        return check(candidate, M, n) ? candidate : -1;
+    }
+};

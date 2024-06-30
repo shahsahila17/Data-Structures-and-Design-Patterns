@@ -1,0 +1,111 @@
+class Solution {
+  public:
+  
+    Node* getTarget(Node* root, int target) {
+        
+        if(root == NULL)
+            return NULL;
+            
+        if(root->data == target)
+            return root;
+            
+        Node* left = getTarget(root->left, target);
+        Node* right = getTarget(root->right, target);
+        
+        if(left != NULL && right == NULL)
+            return left;
+        else if(left == NULL && right != NULL) 
+            return right;
+        else
+            return NULL;
+    }
+  
+    void createMap(Node* root, unordered_map<Node*, Node*>& mapping) {
+        
+        queue<Node*> q;
+        q.push(root);
+        
+        
+        while(!q.empty()) {
+            
+            int size = q.size();
+            
+            for(int i=0; i<size; i++) {
+                
+                Node* n = q.front();
+                q.pop();
+                
+                if(n->left) {
+                    mapping[n->left] = n;
+                    q.push(n->left);
+                }
+                if(n->right) {
+                    mapping[n->right] = n;
+                    q.push(n->right);
+                }
+            }
+            
+        }
+    }
+  
+    int minTime(Node* root, int target) 
+    {
+        Node* targetNode = getTarget(root, target);
+        unordered_map<Node*, Node*> parentMap;
+        parentMap[root] = NULL;
+        createMap(root, parentMap);
+        int ans = 0;
+        
+        queue<Node*> q;
+        unordered_map<Node*, bool> visited;
+        
+        q.push(targetNode);
+        visited[targetNode] = true;
+        bool isAdded;
+        
+        while(!q.empty()) {
+            
+            int size = q.size();
+            isAdded = false;
+            
+            for(int i=0; i<size; i++) {
+            
+                Node* n = q.front();
+                q.pop();
+                
+                if(n->left) {
+                    if(!visited[n->left]) {
+                        q.push(n->left);
+                        visited[n->left] = true;
+                        isAdded = true;
+                    }
+                }
+            
+                if(n->right) {
+                    if(!visited[n->right]) {
+                        q.push(n->right);
+                        visited[n->right] = true;
+                        isAdded = true;
+                    }
+                }
+            
+                if(parentMap[n]) {
+                    if(!visited[parentMap[n]]) 
+                    {
+                        q.push(parentMap[n]);
+                        visited[parentMap[n]] = true;
+                        isAdded = true;
+                    }
+                }
+            }
+            
+            if(isAdded)
+                ans++;
+            
+        }
+        
+        
+        return ans;
+    }
+    
+};

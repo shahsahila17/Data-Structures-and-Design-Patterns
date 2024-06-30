@@ -1,0 +1,72 @@
+class Solution
+{
+    public:
+    
+    void insertAtTail(Node* &head, Node* &tail, int data) {
+        Node* temp = new Node(data);
+        
+        if(head == NULL) {
+            head = temp;
+            tail = temp;
+        }
+        else {
+            tail->next = temp;
+            tail = temp;
+        }
+    }
+    
+    void createLinks(Node* &head1, Node* &head2) {
+        Node* p = head1;
+        Node* q = head2;
+        
+        while(p != NULL) {
+            Node* temp = p->next;
+            p->next = q;
+            p = temp;
+            
+            temp = q->next;
+            q->next = p;
+            q = temp;
+        }
+    }
+    
+    void unlink(Node* &head1, Node* &head2) {
+        Node* p = head1;
+        Node* q = head2;
+        
+        while(p != NULL && q != NULL) {
+            p->next = q->next;
+            p = p->next;
+            if(p!=NULL)
+                q->next = p->next;
+            q = q->next;
+        }
+    }
+    
+    Node *copyList(Node *head)
+    {
+        Node* cloneHead = NULL;
+        Node* cloneTail = NULL;
+        
+        Node* p = head;
+        while(p != NULL) {
+            insertAtTail(cloneHead, cloneTail, p->data);
+            p = p->next;
+        }
+        
+        createLinks(head, cloneHead);
+        
+        p = head;
+        
+        while(p != NULL) {
+            if(p->arb != NULL)
+                p->next->arb = p->arb->next;
+            p = p->next->next;
+        }
+        
+        unlink(head, cloneHead);
+        
+        return cloneHead;
+    }
+
+};

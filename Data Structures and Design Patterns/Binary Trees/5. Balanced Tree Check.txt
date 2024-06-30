@@ -1,0 +1,30 @@
+class Solution{
+    public:
+    //Function to check whether a binary tree is balanced or not.
+    
+    pair<int, bool> solve(Node* root) {
+        
+        if(root == NULL)
+            return make_pair(0, true);
+            
+        pair<int, bool> left = solve(root->left);
+        pair<int, bool> right = solve(root->right);
+        
+        int height = max(left.first, right.first) + 1;
+        
+        if(left.second && right.second && abs(left.first - right.first) <= 1) {
+            return make_pair(height, true);
+        }
+        else {
+            return make_pair(height, false);
+        }
+        
+    }
+     
+    bool isBalanced(Node *root)
+    {
+        pair<int, bool> ans = solve(root);
+        return ans.second;
+    }
+};
+

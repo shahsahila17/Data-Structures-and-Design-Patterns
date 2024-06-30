@@ -1,0 +1,57 @@
+#include <iostream>
+using namespace std;
+
+class Insurance {
+    public:
+        virtual void visit() {
+            cout<<"Visiting insurance"<<endl;
+        }
+};
+
+class Warranty : public Insurance {
+    public:
+        virtual void visit() {
+            cout<<"Visiting Warranty"<<endl;
+        }
+};
+
+class Scorpio {
+    public:
+        virtual void drive() {
+            cout<<"Driving Scorpio"<<endl;
+        }
+        virtual void visitor(Warranty* visitor) {
+            cout<<"Scorpio Warranty visitor"<<endl;
+        }
+        virtual void visitor(Insurance* visitor) {
+            cout<<"Scorpio Insurance visitor"<<endl;
+        }
+};
+
+class Fortuner : public Scorpio {
+    public:
+        virtual void drive() {
+            cout<<"Driving Fortuner"<<endl;
+        }
+        virtual void visitor(Warranty* visitor) {
+            cout<<"Fortuner Warranty visitor"<<endl;
+        }
+        virtual void visitor(Insurance* visitor) {
+            cout<<"Fortuner Insurance visitor"<<endl;
+        }
+};
+
+int main()
+{
+    Scorpio* scorpio = new Scorpio();
+    Scorpio* fortuner = new Fortuner();
+    Insurance* insuranceVisitor = new Insurance();
+    Insurance* warrantyVisitor = new Warranty();
+    
+    scorpio->drive();
+    scorpio->visitor(insuranceVisitor);
+    scorpio->visitor(warrantyVisitor);
+    fortuner->drive();
+    fortuner->visitor(insuranceVisitor);
+    fortuner->visitor(warrantyVisitor);
+}

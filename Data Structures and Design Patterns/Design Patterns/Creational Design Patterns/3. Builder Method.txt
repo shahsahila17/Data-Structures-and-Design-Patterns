@@ -1,0 +1,70 @@
+#include <iostream>
+using namespace std;
+
+class Computer {
+    private:
+        string CPU;
+        string memory;
+        string storage;
+        
+    public:
+        void setCPU(string CPU) {
+            this->CPU = CPU;
+        }
+        void setMemory(string memory) {
+            this->memory = memory;
+        }
+        void setStorage(string storage) {
+            this->storage = storage;
+        }
+        void details(){
+            cout<<"Details of this computer are as follows : CPU = "<<this->CPU<<" Storage = "<<this->storage<<" Memory = "<<this->memory<<endl;
+        }
+};
+
+class ComputerBuilder {
+    public:
+        virtual void buildCPU() = 0;
+        virtual void buildMemory() = 0;
+        virtual void buildStorage() = 0;
+        virtual Computer build() = 0;
+};
+
+class DesktopBuilder : public ComputerBuilder {
+    public:
+        Computer computer;
+        
+        DesktopBuilder() {
+            computer = Computer();
+        }
+        void buildCPU() {
+            computer.setCPU("Intel i7");
+        }
+        void buildMemory() {
+            computer.setMemory("16GB");
+        }
+        void buildStorage() {
+            computer.setStorage("512GB SSD");
+        }
+        Computer build() {
+            return computer;
+        }
+};
+
+class Director {
+    public:
+        Computer construct(ComputerBuilder* computerBuilder) {
+            computerBuilder->buildCPU();
+            computerBuilder->buildMemory();
+            computerBuilder->buildStorage();
+            return computerBuilder->build();
+        }     
+};
+
+int main()
+{
+    ComputerBuilder* computerBuilder = new DesktopBuilder;
+    Director d;
+    Computer c = d.construct(computerBuilder);
+    c.details();
+}

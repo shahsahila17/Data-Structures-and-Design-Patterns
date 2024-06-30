@@ -1,0 +1,72 @@
+#include <iostream>
+using namespace std;
+
+class Airplane {
+    public:
+        virtual void requestLanding() = 0;
+        virtual void update() = 0;
+};
+
+class ATCController {
+   public:
+        virtual void requestLanding(Airplane*) = 0; 
+};
+
+class Indigo : public Airplane {
+    private:
+        ATCController* controller;
+    public:
+        Indigo(ATCController* controller) {
+            this->controller = controller;
+        }
+        void requestLanding() {
+            controller->requestLanding(this);
+        }
+        void update() {
+            cout<<"Landing the Indigo airplane"<<endl;
+        }
+};
+
+class Tata : public Airplane {
+    private:
+        ATCController* controller;
+    public:
+        Tata(ATCController* controller) {
+            this->controller = controller;
+        }
+        void requestLanding() {
+            controller->requestLanding(this);
+        }
+        void update() {
+            cout<<"Landing the Tata airplane"<<endl;
+        }
+};
+
+class AirplaneController : public ATCController {
+    public:
+        void requestLanding(Airplane* airplane) {
+            airplane->update();
+        }
+};
+
+int main() {
+    ATCController* controller = new AirplaneController();
+    
+    Airplane* airplane1 = new Indigo(controller);
+    Airplane* airplane2 = new Tata(controller);
+    
+    airplane1->requestLanding();
+    airplane2->requestLanding();
+}
+
+
+
+
+
+
+
+
+
+
+
+

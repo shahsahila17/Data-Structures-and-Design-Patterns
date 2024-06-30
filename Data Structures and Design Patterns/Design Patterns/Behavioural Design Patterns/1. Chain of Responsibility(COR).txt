@@ -1,0 +1,64 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class AuthenticationHandler {
+  public:
+    virtual void setNextHandler(AuthenticationHandler*) = 0;
+    virtual void handleRequest(string) = 0;
+};
+
+class PasswordHandler : public AuthenticationHandler {
+    private:
+        AuthenticationHandler* authenticationHandler;
+    public:
+        void setNextHandler(AuthenticationHandler* authenticationHandler) {
+            this->authenticationHandler = authenticationHandler;
+        }
+        void handleRequest(string request) {
+            if(request == "password") {
+                cout<<"Password handler has handled the request"<<endl;
+            }
+            else {
+                if(authenticationHandler) {
+                    authenticationHandler->handleRequest(request);
+                }
+                else {
+                    cout<<"No handler to handle the request"<<endl;
+                }
+            }
+        }
+};
+
+class BiometricHandler : public AuthenticationHandler {
+    private:
+        AuthenticationHandler* authenticationHandler;
+    public:
+        void setNextHandler(AuthenticationHandler* authenticationHandler) {
+            this->authenticationHandler = authenticationHandler;
+        }
+        void handleRequest(string request) {
+            if(request == "biometric") {
+                cout<<"Biometric handler has handled the request"<<endl;
+            }
+            else {
+                if(authenticationHandler) {
+                    authenticationHandler->handleRequest(request);
+                }
+                else {
+                    cout<<"No handler to handle the request"<<endl;
+                }
+            }
+        }
+};
+
+int main()
+{
+    AuthenticationHandler* passwordHandler = new PasswordHandler();
+    AuthenticationHandler* biometricHandler = new BiometricHandler();
+    
+    passwordHandler->setNextHandler(biometricHandler);
+    passwordHandler->handleRequest("password");
+    passwordHandler->handleRequest("biometric");
+    passwordHandler->handleRequest("sahil");
+}

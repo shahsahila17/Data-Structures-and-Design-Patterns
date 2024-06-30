@@ -1,0 +1,76 @@
+#include <iostream>
+#include<vector>
+
+using namespace std;
+
+class Airplane {
+    public:
+        virtual void fly() = 0;
+        virtual void land() = 0;
+        virtual void update() = 0;
+};
+
+class ATCController {
+    public:
+        virtual void add(Airplane*) = 0;
+        virtual void remove(Airplane*) = 0;
+        virtual void notify() = 0;
+};
+
+class Indigo: public Airplane {
+    private:
+        ATCController* controller;
+    public:
+        Indigo(ATCController* controller) {
+            this->controller = controller;
+        }
+        void fly() {
+            controller->add(this);
+            cout<<"Indigo is flying"<<endl;
+        }
+        void land() {
+            cout<<"Indigo has landed"<<endl;
+            controller->remove(this);
+        }
+        void update() {
+            cout<<"got update from the controller"<<endl;
+        }
+};
+
+class AirplaneController : public ATCController {
+    private:
+        vector<Airplane*> airplanes;
+    public:
+        void add(Airplane* airplane) {
+            cout<<"Subscribed to ATC Controller"<<endl;
+            airplanes.push_back(airplane);
+        }
+        void remove(Airplane* airplane) {
+            cout<<"UnSubscribed to ATC Controller"<<endl;
+            vector<Airplane*> :: iterator it = airplanes.begin();
+            for(; it!=airplanes.end(); it++) {
+                if(*it == airplane) {
+                    airplanes.erase(it);
+                }
+            }
+        }
+        void notify(){
+            for(int i=0; i<airplanes.size(); i++) {
+                airplanes[i]->update();
+            }
+        }
+};
+
+int main()
+{
+    ATCController* controller = new AirplaneController();
+    
+    Airplane* air1 = new Indigo(controller);
+    Airplane* air2 = new Indigo(controller);
+    
+    air1->fly();
+    air2->fly();
+    controller->notify();
+    air1->land();
+    air2->land();
+}

@@ -1,0 +1,44 @@
+class Solution
+{
+    public:
+    queue<int> rev(queue<int> q)
+    {
+        if(q.size() == 1)
+            return q;
+            
+        int data = q.front();
+        q.pop();
+        q = rev(q);
+        q.push(data);
+        return q;
+    }
+};
+
+
+----------------------------------------------------
+
+
+
+class Solution
+{
+    public:
+    queue<int> rev(queue<int> q)
+    {
+        stack<int> s;
+        int data;
+        
+        while(!q.empty()) {
+            data = q.front();
+            q.pop();
+            s.push(data);
+        }
+        
+        while(!s.empty()) {
+            data = s.top();
+            s.pop();
+            q.push(data);
+        }
+        
+        return q;
+    }
+};

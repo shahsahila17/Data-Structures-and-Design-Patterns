@@ -1,0 +1,29 @@
+class Solution {
+  public:
+  
+    void solve(Node* root, map<int, map<int, int> >& mapping, int hd, int lvl) {
+        
+        if(root == NULL)
+            return;
+            
+        mapping[hd][lvl] = root->data;
+        solve(root->left, mapping, hd-1, lvl+1);
+        solve(root->right, mapping, hd+1, lvl+1);
+    }
+ 
+    vector <int> bottomView(Node *root) {
+        vector<int> ans;
+        map<int, map<int, int> > mapping;
+        int hd = 0;
+        int lvl = 0;
+        
+        solve(root, mapping, hd, lvl);
+        
+        for(auto i:mapping) {
+            auto lastPair = prev(i.second.end());
+            ans.push_back(lastPair->second);
+        }
+        
+        return ans;
+    }
+};

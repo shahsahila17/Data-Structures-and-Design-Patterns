@@ -1,0 +1,92 @@
+class Solution{
+  public:
+  
+    int* getPrevSmaller(int arr[], int n) {
+        
+        stack<int> s;
+        s.push(-1);
+        int* array = new int[n];
+        
+        for(int i=0; i<n; i++) {
+            if(s.top() == -1) {
+                array[i] = -1;
+                s.push(i);
+            }
+            else {
+                while(arr[s.top()] >= arr[i] && s.top() != -1) {
+                    s.pop();
+                }
+                array[i] = s.top();
+                s.push(i);
+            }
+        }
+        
+        return array;
+    }
+    
+    
+    int* getNextSmaller(int arr[], int n) {
+        
+        stack<int> s;
+        s.push(-1);
+        int* array = new int[n];
+        
+        for(int i=n-1; i>=0; i--) {
+            if(s.top() == -1) {
+                array[i] = -1;
+                s.push(i);
+            }
+            else {
+                while(arr[s.top()] >= arr[i] && s.top() != -1) {
+                    s.pop();
+                }
+                array[i] = s.top();
+                s.push(i);
+            }
+        }
+        
+        return array;
+    }
+    
+    
+  
+    int largestArea(int arr[], int n) {
+        
+        int* prevSmaller = getPrevSmaller(arr, n);
+        int* nextSmaller = getNextSmaller(arr, n);
+        
+        int maxVal = INT_MIN;
+        int width;
+        
+        for(int i=0; i<n; i++) {
+            if(nextSmaller[i] == -1)
+                nextSmaller[i] = n;
+            width = nextSmaller[i] - prevSmaller[i] - 1;
+            maxVal = max(maxVal, arr[i]*width); 
+        }
+        
+        return maxVal;
+        
+    }
+    
+  
+    int maxArea(int M[MAX][MAX], int n, int m) {
+        
+        int ans = INT_MIN;
+        
+        int area = largestArea(M[0], m);
+        
+        for(int i=1; i<n; i++) {
+            for(int j=0; j<m; j++) {
+                if(M[i][j] != 0) {
+                    M[i][j] = M[i][j] + M[i-1][j];
+                }
+             }
+             
+             area = max(largestArea(M[i], m), area);
+        }
+        
+        return area;
+        
+    }
+};

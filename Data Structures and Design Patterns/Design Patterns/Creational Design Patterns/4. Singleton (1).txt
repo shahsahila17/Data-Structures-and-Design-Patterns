@@ -1,0 +1,54 @@
+#include <iostream>
+using namespace std;
+
+/*This is a singleton class where we only allow creation of a single object.
+
+
+Singleton(const Singleton&)= delete;        --> Here we delete the copy constructor for the class
+Singleton& operator=(const Singleton&)= delete; --> Here we delete the operatior overload
+
+
+we check here if (instance == NULL) and then create an object if it is NULL or else we return the same 
+object that is created previously
+
+The drawback of doing it this way is that in multithreaded approach this will fail.
+Let's say thread1 has entered if (instance == NULL) and there is a context switch to thread 2.
+In that case thread2 will enter if (instance == NULL) and create an object. Now when the control goes
+back to thread1 it will also create an object. Hence we end up creating multiple object for a Singleton class.
+
+*/
+
+class Singleton {
+    private:
+        static Singleton* instance;
+        
+        Singleton() {
+            cout<<"Inside constructor of Singleton class"<<endl;
+        }
+        
+        Singleton(const Singleton&)= delete;
+        Singleton& operator=(const Singleton&)= delete;
+    
+    public: 
+        void display() {
+            cout<<"This is Sahil"<<endl;
+        }
+        
+        static Singleton* getInstance() {
+            if(instance == NULL) {
+                instance = new Singleton;
+            }
+            return instance;
+        }
+};
+
+Singleton* Singleton::instance = NULL; 
+
+int main() {
+    Singleton* obj1 = Singleton::getInstance();
+    Singleton* obj2 = Singleton::getInstance();
+}
+
+
+
+

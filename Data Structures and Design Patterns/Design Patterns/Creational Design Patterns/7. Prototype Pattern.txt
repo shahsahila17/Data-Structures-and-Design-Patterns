@@ -1,0 +1,39 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class ScorpioPrototype {
+    public:
+        virtual void setEngine(string) = 0;
+        virtual void drive() = 0;
+        virtual ScorpioPrototype* clone() = 0;
+};
+
+class Scorpio : public ScorpioPrototype {
+    private:
+        string engine;
+        int tyre;
+    public:
+        Scorpio(string engine, int tyre) {
+            this->engine = engine;
+            this->tyre = tyre;
+        }
+        void setEngine(string engine) {
+            this->engine = engine;
+        }
+        void drive() {
+            cout<<"Driving Scorpio with "<<engine<<" and tyre = "<<tyre<<endl;
+        }
+        ScorpioPrototype* clone() {
+            return new Scorpio(*this);
+        }
+};
+
+int main()
+{
+    ScorpioPrototype* prototype = new Scorpio("Scorpio Engine", 5);
+    
+    ScorpioPrototype* scorpioN = prototype->clone();
+    scorpioN->setEngine("ScorpioN engine");
+    scorpioN->drive();
+}

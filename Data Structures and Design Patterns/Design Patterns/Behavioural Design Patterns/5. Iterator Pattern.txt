@@ -1,0 +1,94 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+class CustomIterator {
+    public:
+        virtual bool hasNext() = 0;
+        virtual string next() = 0;
+};
+
+class AirForce {
+    public:
+        vector<string> jets;
+        string helis[100];
+        int cnt;
+        
+        AirForce() {
+            cnt = 0;
+        }
+        
+        void addHelis(string heli) {
+            helis[cnt] = heli;
+            cnt++;
+        }
+        
+        void addJets(string jet) {
+            jets.push_back(jet);
+        }
+        
+        vector<string> getJets() {
+            return jets;
+        }
+        
+        string* getHelis() {
+            return helis;
+        }
+};
+
+class AirForceIterator : public CustomIterator {
+    
+    public:
+        vector<string> jets;
+        string* helis;
+        int heliCount;
+        int jetCount;
+        int heliSize;
+        
+    AirForceIterator(AirForce airForce) {    
+        heliCount = 0;
+        jetCount = 0;
+        jets = airForce.getJets();
+        helis = airForce.getHelis();
+        heliSize = airForce.cnt;
+    }
+    
+    bool hasNext() {
+        if(heliCount < heliSize) {
+            return true;
+        }
+        if(jetCount < jets.size()) {
+            return true;
+        }
+        return false;
+    }
+    
+    string next() {
+        if(heliCount < heliSize) {
+            return helis[heliCount++];
+        }
+        if(jetCount < jets.size()) {
+            return jets[jetCount++];
+        }
+        
+        return "";
+    }
+};
+
+int main()
+{
+    AirForce airForce;
+    
+    airForce.addJets("Jet1");
+    airForce.addJets("Jet2");
+    
+    airForce.addHelis("Heli1");
+    airForce.addHelis("Heli2");
+    
+    AirForceIterator iterator(airForce);
+    
+    while(iterator.hasNext()) {
+        cout<<iterator.next()<<" ";
+    }
+}

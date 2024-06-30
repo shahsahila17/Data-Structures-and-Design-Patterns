@@ -1,0 +1,38 @@
+// singletonMeyers.cpp
+
+#include <chrono>
+#include <iostream>
+#include <future>
+
+/*
+This is the best approach for Singleton method as it solves both the previous 2 drawbacks and also makes
+sure we call the constructor only once.
+
+Note: It uses a property that static variables defined inside a class are initialized only once
+*/
+
+using namespace std;
+
+class MySingleton{
+public:
+  static MySingleton* getInstance(){
+    static MySingleton* instance = new MySingleton;
+    return instance;
+  }
+private:
+  MySingleton() {
+      cout<<"Inside constructor"<<endl;
+  }
+  ~MySingleton()= default;
+  MySingleton(const MySingleton&)= delete;
+  MySingleton& operator=(const MySingleton&)= delete;
+  
+};
+
+int main(){
+
+    MySingleton::getInstance();
+    MySingleton::getInstance();
+    MySingleton::getInstance();
+
+}

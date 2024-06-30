@@ -1,0 +1,48 @@
+class Solution{
+    public:
+    /*You are required to complete this method */
+    // Return the size of the largest sub-tree which is also a BST
+    
+    class Info {
+        public:
+            int maxi;
+            bool isBST;
+            int mini;
+            int size;
+    };
+    
+    Info solve(Node* root, int& ans) {
+        
+        if(root == NULL) {
+            Info i;
+            i.maxi = INT_MIN;
+            i.mini = INT_MAX;
+            i.isBST = true;
+            i.size = 0;
+            return i;
+        }
+        
+        Info left = solve(root->left, ans);
+        Info right = solve(root->right, ans);
+        
+        Info curr;
+        curr.maxi = max(root->data, right.maxi);
+        curr.mini = min(root->data, left.mini);
+        curr.size = left.size + right.size + 1;
+        
+        //cout<<root->data<<" "<<curr.mini<<" "<<curr.maxi<<" "<<right.mini<<" "<<left.maxi<<endl;
+        curr.isBST = left.isBST && right.isBST && (root->data > left.maxi) && (root->data < right.mini);
+        
+        if(curr.isBST) 
+            ans = max(ans,curr.size);
+            
+        return curr;
+    }
+    
+    int largestBst(Node *root)
+    {
+    	int ans = 0;
+    	solve(root, ans);
+    	return ans;
+    }
+};

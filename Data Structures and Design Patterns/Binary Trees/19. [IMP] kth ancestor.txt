@@ -1,0 +1,37 @@
+Node* solve(Node *root, int& k, int node, int& ans) {
+    
+    if(root == NULL)
+        return NULL;
+        
+    if(root->data == node) {
+        return root;
+    }
+    
+    Node* left = solve(root->left, k, node, ans);
+    Node* right = solve(root->right, k, node, ans);
+    
+    if(left == NULL && right == NULL)
+        return NULL;
+    else if(left != NULL && right == NULL) {
+        k--;
+        if(k == 0)
+            ans = root->data;
+        return root;
+    }
+    else if(left == NULL && right != NULL) {
+        k--;
+        if(k == 0)
+            ans = root->data;
+        return root;
+    }
+    else {
+        return root;
+    }
+}
+
+int kthAncestor(Node *root, int k, int node)
+{
+    int ans = -1;
+    solve(root, k, node, ans);
+    return ans;
+}

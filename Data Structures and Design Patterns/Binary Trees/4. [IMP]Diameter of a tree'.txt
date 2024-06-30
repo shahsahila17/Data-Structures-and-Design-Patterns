@@ -1,0 +1,25 @@
+class Solution {
+  public:
+    // Function to return the diameter of a Binary Tree.
+    pair<int, int> solve(Node* root) {
+        
+        if(root == NULL) {
+            return make_pair(0, 0);
+        }
+        
+        pair<int, int> left = solve(root->left);
+        pair<int, int> right = solve(root->right);
+        
+        int height = max(left.first, right.first) + 1;
+        int diameter = max(left.second, max(right.second, 
+                                (left.first+right.first+1)));
+        
+        return make_pair(height, diameter);
+    }
+    
+    int diameter(Node* root) {
+        pair<int, int> ans = solve(root);
+        return ans.second;
+    }
+    
+    

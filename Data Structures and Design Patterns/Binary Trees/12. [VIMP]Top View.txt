@@ -1,0 +1,92 @@
+class Solution
+{
+    public:
+    //Function to return a list of nodes visible from the top view 
+    //from left to right in Binary Tree.
+    
+    void solve(Node* root, map<int, map<int, int> >& mapping, int hd, int lvl) {
+        
+        if(root == NULL)
+            return;
+        
+        if(mapping[hd].find(lvl) == mapping[hd].end())
+            mapping[hd][lvl] = root->data;
+        solve(root->left, mapping, hd-1, lvl+1);
+        solve(root->right, mapping, hd+1, lvl+1);
+    }
+    
+    vector<int> topView(Node *root)
+    {
+        vector<int> ans;
+        map<int, map<int, int> > mapping;
+        int hd = 0;
+        int lvl = 0;
+        
+        solve(root, mapping, hd, lvl);
+        
+        for(auto i:mapping) {
+            for(auto j:i.second) {
+                ans.push_back(j.second);
+                break;
+            }
+        }
+        
+        return ans;
+    }
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OR
+
+Preference to left
+
+class Solution
+{
+    public:
+    //Function to return a list of nodes visible from the top view 
+    //from left to right in Binary Tree.
+    
+    void solve(Node* root, map<int, map<int, int> >& mapping, int hd, int lvl) {
+        
+        if(root == NULL)
+            return;
+        
+        // if(mapping[hd].find(lvl) == mapping[hd].end())
+        mapping[hd][lvl] = root->data;
+        solve(root->right, mapping, hd+1, lvl+1);
+        solve(root->left, mapping, hd-1, lvl+1);
+    }
+    
+    vector<int> topView(Node *root)
+    {
+        vector<int> ans;
+        map<int, map<int, int> > mapping;
+        int hd = 0;
+        int lvl = 0;
+        
+        solve(root, mapping, hd, lvl);
+        
+        for(auto i:mapping) {
+            for(auto j:i.second) {
+                ans.push_back(j.second);
+                break;
+            }
+        }
+        
+        return ans;
+    }
+
+};

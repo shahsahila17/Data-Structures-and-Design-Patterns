@@ -1,0 +1,32 @@
+#include <iostream>
+using namespace std;
+
+class Aircraft {
+    //intrinsic
+    private:
+        static string name;
+        static int height;
+    public:
+        //extrinsic
+        int calculateTime(int srcX, int srcY, int destX, int destY, int speed) {
+            cout<<"Aircraft "<<name<<" of height "<<height << " is flying"<<endl;
+            return 10;
+        }
+};
+
+string Aircraft :: name = "Tejas";
+int Aircraft :: height = 20;
+
+int main()
+{
+    Aircraft aircraft;
+    
+    //extrinsic: does not always have to create an object;
+    aircraft.calculateTime(1,2,3,4,100);
+    
+    //Reduced object creation
+    for(int i=0; i<2 ;i++) {
+        //Can input certain info:
+        aircraft.calculateTime(1,2,3,4,100);
+    }
+}

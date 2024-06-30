@@ -1,0 +1,118 @@
+Approach 1 :
+
+
+
+public:
+    //Function to sort a linked list of 0s, 1s and 2s.
+    Node* segregate(Node *head) {
+        
+        int oneCount = 0;
+        int twoCount = 0;
+        int zeroCount = 0;
+        Node* headSorted = NULL;
+        
+        Node* p = head;
+        
+        while(p!=NULL){
+            if (p->data == 0)
+                zeroCount++;
+            else if (p->data == 1)
+                oneCount++;
+            else
+                twoCount++;
+            p = p->next;
+        }
+        
+        while(zeroCount--){
+            if(headSorted == NULL){
+                headSorted = new Node(0);
+                p = headSorted;
+            }
+            else{
+                p->next = new Node(0);
+                p = p->next;
+            }
+        }
+        
+        while(oneCount--){
+            if(headSorted == NULL){
+                headSorted = new Node(1);
+                p = headSorted;
+            }
+            else{
+                p->next = new Node(1);
+                p = p->next;
+            }
+        }
+        
+        while(twoCount--){
+            if(headSorted == NULL){
+                headSorted = new Node(2);
+                p = headSorted;
+            }
+            else{
+                p->next = new Node(2);
+                p = p->next;
+            }
+        }
+        
+        return headSorted;
+        
+    }
+
+
+
+
+
+
+Approach 2:(Better)
+
+void insertAtTail(Node* &tail, Node* p){
+        tail->next = p;
+        tail = tail->next;
+    }
+    
+    Node* segregate(Node *head) {
+        
+        Node* zeroHead = new Node(-1);
+        Node* zeroTail = zeroHead;
+        Node* oneHead = new Node(-1);
+        Node* oneTail = oneHead;
+        Node* twoHead = new Node(-1);
+        Node* twoTail = twoHead;
+        
+        Node* p = head;
+        
+        while(p != NULL){
+            if(p->data == 0){
+                insertAtTail(zeroTail,p);
+            }
+            else if(p->data == 1){
+                insertAtTail(oneTail,p);
+            }
+            else if(p->data == 2){
+                insertAtTail(twoTail,p);
+            }
+            p = p->next;
+        }
+        
+        if(oneHead -> next == NULL){
+            zeroTail->next = twoHead->next;
+        }
+        else {
+            zeroTail->next = oneHead->next;
+        }
+        
+        oneTail->next = twoHead->next;
+        twoTail->next = NULL;
+        
+        head = zeroHead->next;
+        
+        delete oneHead;
+        delete twoHead;
+        delete zeroHead;
+        
+        
+        return head;
+        
+    }

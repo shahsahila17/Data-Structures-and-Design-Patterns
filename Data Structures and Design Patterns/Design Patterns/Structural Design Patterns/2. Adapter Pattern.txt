@@ -1,0 +1,44 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Computer {
+    public:
+        string getCommand() {
+            return "Hi, This is Sahil";
+        }
+};
+
+class Printer {
+    public:
+        string getInkColor() {
+            return "blue";
+        }
+        void print(string s, string color) {
+            cout<<"Printing "<<s<<endl;
+        }
+        
+};
+
+class Adapter {
+    private:
+        Printer p;
+    public:
+        void sendCommand(string s) {
+            string color = p.getInkColor();
+            string str = "";
+            for(char c:s) {
+                str+=toupper(c);
+            }
+            p.print(str, color);
+        }
+};
+
+int main()
+{
+    Computer computer;
+    Adapter adapter;
+    
+    string str = computer.getCommand();
+    adapter.sendCommand(str);
+}
