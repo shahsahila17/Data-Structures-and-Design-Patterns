@@ -1,0 +1,64 @@
+class Solution {
+  public:
+    
+    int countNodes(Node* root) {
+        
+        if(root == NULL) 
+            return 0;
+            
+        return countNodes(root->left) + countNodes(root->right) + 1;
+        
+    } 
+    
+    bool isCBT(Node* root, int i, int n) {
+        
+        if(root == NULL)
+            return true;
+        
+        if(i>=n)
+            return false;
+            
+        bool left = isCBT(root->left, 2*i+1, n);
+        bool right = isCBT(root->right, 2*i+2, n);
+        
+        return (left && right);
+        
+    }
+    
+    bool isMaxOrder(Node* root) {
+        
+        if(root == NULL)
+            return true;
+        
+        if(root->left == NULL && root->right == NULL)
+            return true;
+        
+        if(root->right == NULL && root->left != NULL) {
+            if(root->data > root->left->data)
+                return true;
+            return false;
+        }
+        else {
+            bool left = isMaxOrder(root->left);
+            bool right = isMaxOrder(root->right);
+            
+            if(left && right && root->data > root->left->data && root->data > root->right->data)
+                return true;
+            return false;
+        }
+        
+        return true;
+        
+    }
+  
+    bool isHeap(struct Node* tree) {
+        
+        int n = countNodes(tree);
+        int i = 0;
+        
+        if(isCBT(tree, i, n) && isMaxOrder(tree))
+            return true;
+        return false;
+        
+    }
+};

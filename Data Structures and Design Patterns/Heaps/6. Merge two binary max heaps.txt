@@ -1,0 +1,44 @@
+class Solution{
+    public:
+    
+    void heapify(vector<int>& arr, int i, int n) {
+        
+        while(i < n) {
+            int left = 2*i + 1;
+            int right = 2*i + 2;
+            int index = i;
+            
+            if(left < n && arr[left] > arr[index])
+                index = left;
+            if(right < n && arr[right] > arr[index])
+                index = right;
+                
+            if(index == i)
+                return;
+                
+            swap(arr[i], arr[index]);
+            i = index;
+        }
+        
+    }
+    
+    vector<int> mergeHeaps(vector<int> &a, vector<int> &b, int n, int m) {
+        
+        vector<int> c;
+        
+        for(int i:a)
+            c.push_back(i);
+        for(int j:b)
+            c.push_back(j);
+            
+        // for(int i:c)
+        //     cout<<i<<" ";
+        // cout<<endl;
+            
+        for(int i=((m+n)/2)-1; i>=0; i--) {
+            heapify(c, i, m+n);
+        }
+        
+        return c;
+        
+    }
