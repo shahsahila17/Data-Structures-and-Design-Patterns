@@ -1,0 +1,37 @@
+
+Inserting sorted array in
+postorder = max heap
+preorder = min heap
+
+
+
+class Solution{
+  public:
+  
+    void inorder(Node* root, vector<int>& list) {
+        if(root == NULL)
+            return;
+        inorder(root->left, list);
+        list.push_back(root->data);
+        inorder(root->right, list);
+    }
+    
+    void insertInPostOrder(Node* root, vector<int>& list, int& i) {
+        
+        if(root == NULL)
+            return;
+            
+        insertInPostOrder(root->left, list, i);
+        insertInPostOrder(root->right, list, i);
+        root->data = list[i++];
+    }
+  
+    void convertToMaxHeapUtil(Node* root)
+    {
+        vector<int> inorderList;
+        inorder(root, inorderList);
+        
+        int i = 0;
+        insertInPostOrder(root, inorderList, i);
+    }    
+};
